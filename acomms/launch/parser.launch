@@ -1,0 +1,4 @@
+<launch>
+    <node name = "parser" pkg = "acomms" type = "parser.py">
+    </node>
+</launch>
