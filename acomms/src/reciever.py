@@ -16,8 +16,20 @@ class reciever:
         
     def extract(self, unparsed_msg):
         print("msg recieved")
+        #print(unparsed_msg.data)
+        #print(type(unparsed_msg.data))
         
-        #publisher = rp.Publisher(destination_topic, data_type, queue_size = None)
+        parsed_msg = json.loads(unparsed_msg.data)
+        #print(type(msg))
+        #print(msg)
+        topic = parsed_msg['topic']
+        msg = parsed_msg['msg']
+        data_type = parsed_msg['type']
+        print(topic)
+        print(msg)
+        print(data_type)
+        
+        #publisher = rp.Publisher(topic, data_type, queue_size = None)
         #publisher.publish(msg)
         
 if __name__ == "__main__":

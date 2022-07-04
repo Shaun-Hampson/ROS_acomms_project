@@ -29,4 +29,8 @@ msg =  {
 c = String()
 c.data = json.dumps(msg)
 
+print(c)
+
+#d = json.loads(c.data)  #test line
+#print(d)    #test line
 publisher.publish(c)
