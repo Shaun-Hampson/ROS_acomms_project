@@ -23,7 +23,7 @@ b = message_converter.convert_ros_message_to_dictionary(a)
 
 msg =  {
     "topic": "/test",
-    "type": str(type(a)),
+    "type": str(a._type),
     "msg": b}
 
 c = String()
