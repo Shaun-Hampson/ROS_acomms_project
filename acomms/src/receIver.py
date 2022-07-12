@@ -2,6 +2,7 @@
 
 import rospy as rp
 from std_msgs.msg import String
+import geometry_msgs.msg
 from rospy_message_converter import json_message_converter
 import json
 
@@ -26,10 +27,9 @@ class reciever:
         print(topic)
         print(msg)
         print(data_type)
+        print(globals()[data_type])
         
-        a = data_type.split("/")
-        
-        publisher = rp.Publisher(topic, a[1], queue_size = None)    
+        publisher = rp.Publisher(topic, a, queue_size = None)    
         #TODO: need to find a way of turning a string back to the 
         # desired object type for the message
         publisher.publish(msg)

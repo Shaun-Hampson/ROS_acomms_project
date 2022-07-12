@@ -1,3 +1,0 @@
-<launch>
-    <node name = "reciever" pkg = "acomms" type = "reciever.py" output = "screen"/>
-</launch>
