@@ -1,9 +1,11 @@
 #!/usr/bin/env python
 
+from pickle import TRUE
 import rospy as rp
+import roslib
 from std_msgs.msg import String
-import geometry_msgs.msg
-from rospy_message_converter import json_message_converter
+from geometry_msgs.msg import *
+from rospy_message_converter import message_converter
 import json
 
 class reciever:
@@ -19,19 +21,19 @@ class reciever:
         #print(type(unparsed_msg.data))
         
         parsed_msg = json.loads(unparsed_msg.data)
-        #print(type(msg))
-        #print(msg)
         topic = parsed_msg['topic']
+        #msg = str(parsed_msg['msg']).replace("\'", "\"")
         msg = parsed_msg['msg']
         data_type = parsed_msg['type']
         print(topic)
         print(msg)
         print(data_type)
-        print(globals()[data_type])
+        #print(type(msg))
+        #print(type(roslib.message.get_message_class(data_type)))
         
-        publisher = rp.Publisher(topic, a, queue_size = None)    
-        #TODO: need to find a way of turning a string back to the 
-        # desired object type for the message
+        msg = message_converter.convert_dictionary_to_ros_message(data_type, msg)
+        publisher = rp.Publisher(topic, roslib.message.get_message_class(data_type), queue_size = 1, latch=TRUE)
+        print(msg)
         publisher.publish(msg)
         
 if __name__ == "__main__":

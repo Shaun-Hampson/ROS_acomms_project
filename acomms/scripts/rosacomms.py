@@ -1,0 +1,3 @@
+import rosacomms
+
+rosacomms.main()
