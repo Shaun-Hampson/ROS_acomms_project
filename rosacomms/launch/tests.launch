@@ -1,0 +1,3 @@
+<launch>
+    <node pkg = 'rosacomms' name = 'tests' type = 'test_cmd_publishing.py' output = 'screen'/>
+</launch>
