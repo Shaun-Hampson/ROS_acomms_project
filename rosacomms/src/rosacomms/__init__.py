@@ -55,15 +55,16 @@ def rosacomms_pub(arg):
     
     _check_master()
     
-    rospy.init_node('rosacomms', anonymous=True)
-    pub = rospy.Publisher("/acomms/out", String, latch=True, queue_size=1)
-    rospy.Rate(0.5)
+    rospy.init_node('rosacomms', anonymous=True,  disable_rosout=True, disable_rostime=True)
+    pub = rospy.Publisher("/rosacomms/out", String, queue_size=10)
+    rate = rospy.Rate(0.5)
+    rate.sleep
     msg_class = roslib.message.get_message_class(topic_type)
     
-    _publish(pub, topic_name, msg_class, pub_args)
+#    _publish(pub, topic_name, msg_class, pub_args)
     
     
-def _publish(pub, msg_topic, msg_class, pub_args):
+#def _publish(pub, topic_name, msg_class, pub_args):
     msg = msg_class()
     
     _fill_message(msg, pub_args)
@@ -71,7 +72,7 @@ def _publish(pub, msg_topic, msg_class, pub_args):
     msg_dict = message_converter.convert_ros_message_to_dictionary(msg)
     
     parsed_message = {
-        "topic": msg_topic,
+        "topic": topic_name,
         "type": str(msg._type),
         "msg": msg_dict
     }

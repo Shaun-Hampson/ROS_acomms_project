@@ -9,7 +9,7 @@ from rospy_message_converter import message_converter
 import json
 
 class reciever:
-    def _init__(self):
+    def __init__(self):
         rp.init_node('reciever')
         print('setup')
         rp.Subscriber('/acomms', String, self.extract)
@@ -40,4 +40,4 @@ if __name__ == "__main__":
     while not rp.is_shutdown():
         print('main')
         a = reciever()
-        a._init__()
+        a.__init__()
