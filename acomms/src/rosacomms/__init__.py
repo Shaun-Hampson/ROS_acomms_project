@@ -1,5 +1,7 @@
 from optparse import OptionParser
 from socket import socket
+from std_msgs.msg import String
+from rospy_message_converter import message_converter
 import rosgraph, rospy, roslib, sys
 
 
@@ -17,12 +19,6 @@ def _check_master():
             rosgraph.Master('/rosacomms').getPid()
         except socket.error:
             raise ROSAcommsIOException('Unable to communicate with master')
-  
-    
-def _resource_name_package(name):
-    if not '/' in name:
-        return None
-    return name[:name.find('/')]
 
 
 def _full_usage():
@@ -39,6 +35,7 @@ def rosacomms_pub(arg):
     args = arg[2:]
     
     parser = OptionParser()
+    parser.add_option("-l", '--line', dest="latch", default=False, action="store_true", help="enable latching, ")
     
     (options, args) = parser.parse_args()
     
@@ -50,24 +47,10 @@ def rosacomms_pub(arg):
     
     _check_master()
     
-    pub,msg = create_pub(topic_name, topic_type)
+    rospy.init_node('rosacomms', anonymous=True)
+    pub = rospy.Publisher("/acomms/in", String, latch=True, queue_size=1)
+    rospy.Rate(0.5)
     
-    
-def create_pub(topic_name, topic_type):
-    """Create a rospy publisher based on the topic name and type"""
-    topic_name = rosgraph.names.script_resolve_name('rosacomms', topic_name)
-    try:
-        msg_class = roslib.message.get_message_type(topic_type)
-    except:
-        raise ROSAcommsException('Invalid topic type: %s' %topic_type)
-    
-    if msg_class is None:
-        pkg = _resource_name_package(topic_type)
-        raise ROSAcommsException("invalid message type: %s.\nIf this is a valid message type, perhaps you need to type 'rosmake %s'"%(topic_type, pkg))
-    rospy.init_node('rosacomms', anonymous=True, disable_rosout=True, disable_rostime=disable_rostime)
-    pub = rospy.Publisher(topic_name, msg_class, latch=latch, queue_size=100)
-    return pub, msg_class
-
 
 def main(args = None):
     if args is None:
