@@ -14,7 +14,7 @@ class test:
         #rospy.Subscriber("/test/String", String, self.general_callback)
         
         #test rosacomms/out
-        rospy.Subscriber("/rosacomms/out", Pose, self.general_callback)
+        rospy.Subscriber("/rosacomms/hydromea/in", String, self.general_callback)
         
         rospy.spin()
 

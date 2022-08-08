@@ -26,9 +26,7 @@ def _full_usage():
     print("""rosacomms is a command-line tool used for parsing messages to be sent wirelessly via acoustic modems 
     
     Commands:
-    \trosacomms pub\tpublish data to topic
-    
-    Type rosacomms <command> -h for more detailed usage, e.g. 'rosacomms pub -h'""")
+    \trosacomms pub\tpublish data to topic""")
 
 
 def rosacomms_pub(arg):
@@ -37,9 +35,16 @@ def rosacomms_pub(arg):
     
     parser = OptionParser(usage="usage: %prog pub /topic type [args...]", prog=NAME)
     #parser.add_option("-f", '--file', dest="file", default=False, action="store_true", help="enable latching, ")
+    parser.add_option("-d", '--device', help='switches modem from hydromea to chosen device', default='hydromea')
     
     (options, args) = parser.parse_args(args)
     
+    if options.device == 'hydromea':
+        rosacomms_out = '/rosacomms/hydromea/out'
+    elif options.device == 'evologics':
+        rosacomms_out = '/rosacomms/evologics/out'
+    elif options.device == 'nanomodem':
+        rosacomms_out = '/rosacomms/nanomodem/out'
     if len(arg) == 0:
         parser.error('specify topic name')
     if len(arg) == 1:
@@ -56,15 +61,15 @@ def rosacomms_pub(arg):
     _check_master()
     
     rospy.init_node('rosacomms', anonymous=True,  disable_rosout=True, disable_rostime=True)
-    pub = rospy.Publisher("/rosacomms/out", String, queue_size=10)
+    pub = rospy.Publisher(rosacomms_out, String, queue_size=10)
     rate = rospy.Rate(0.5)
-    rate.sleep
+    rate.sleep()
     msg_class = roslib.message.get_message_class(topic_type)
     
-#    _publish(pub, topic_name, msg_class, pub_args)
+    _publish(pub, topic_name, msg_class, pub_args)
     
     
-#def _publish(pub, topic_name, msg_class, pub_args):
+def _publish(pub, topic_name, msg_class, pub_args):
     msg = msg_class()
     
     _fill_message(msg, pub_args)
