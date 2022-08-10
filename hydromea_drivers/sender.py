@@ -6,7 +6,7 @@ from std_msgs.msg import String
 class sender:
     def __init__(self):
         self.ser = serial.Serial(
-            port='/dev/ttyUSB2',\
+            port='/dev/ttyUSB1',\
             baudrate=115200,\
             parity=serial.PARITY_NONE,\
             stopbits=serial.STOPBITS_ONE,\
@@ -14,7 +14,7 @@ class sender:
             timeout=0)
         print(self.ser.baudrate)
         print(self.ser.name)         # check which port was really used
-        print('Sender should be connected to port: 0')
+        print('Sender should be connected to port: 1')
 
         self.start = timeit.timeit()
         rospy.init_node('hydromea_sender')
@@ -23,10 +23,10 @@ class sender:
 
     def sender_callback(self, data):
         msg = str(data)
-        print('msg: %s' %msg)
+        #print('msg: %s' %msg)
         msg = msg.encode('ascii')
         self.ser.write(msg)
-        print('Publishing data: %s\n\t' %data)
+        print('Publishing: %s\n\t' %data)
         
 if __name__ == '__main__':
     while not rospy.is_shutdown():
