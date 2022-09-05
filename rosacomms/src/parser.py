@@ -8,7 +8,7 @@ import json
 
 
 rp.init_node(name = "acomms", anonymous = False)
-publisher = rp.Publisher('/acomms', String, queue_size=10)
+publisher = rp.Publisher('/rosacomms/hydromea/in', String, queue_size=10)
 rate = rp.Rate(0.5)
 rate.sleep()
 

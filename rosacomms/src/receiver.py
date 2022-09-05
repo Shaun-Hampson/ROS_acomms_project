@@ -10,14 +10,15 @@ import json
 
 class reciever:
     def __init__(self):
-        rp.init_node('reciever')
+        rp.init_node('receiver')
+        modem = rp.get_param('modem_type')
         print('setup')
-        rp.Subscriber('/acomms', String, self.extract)
+        rp.Subscriber('/rosacomms/'+modem+'/in', String, self.extract)
         rp.spin()
         
     def extract(self, unparsed_msg):
-        print("msg recieved")
-        #print(unparsed_msg.data)
+        print("received message")
+        print(unparsed_msg.data)
         #print(type(unparsed_msg.data))
         
         parsed_msg = json.loads(unparsed_msg.data)

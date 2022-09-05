@@ -65,6 +65,8 @@ def rosacomms_pub(arg):
     rate = rospy.Rate(0.5)
     rate.sleep()
     msg_class = roslib.message.get_message_class(topic_type)
+    #print('topic name: ' + topic_name + '\n')
+    #print('topic type: ' + topic_type + '\n')
     
     _publish(pub, topic_name, msg_class, pub_args)
     
@@ -85,7 +87,7 @@ def _publish(pub, topic_name, msg_class, pub_args):
     c = String()
     c.data = json.dumps(parsed_message)
     
-    print(c)
+    print(c.data)
     
     pub.publish(c)
 
