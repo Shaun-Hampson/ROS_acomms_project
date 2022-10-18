@@ -32,4 +32,3 @@ class sender:
 if __name__ == '__main__':
     while not rospy.is_shutdown():
         a = sender()
-        a.__init__()

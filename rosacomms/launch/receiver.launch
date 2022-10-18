@@ -1,4 +1,4 @@
 <launch>
     <node name = "receiver" pkg = "rosacomms" type = "receiver.py" output = "screen"/>
-    <rosparam file="$(find rosacomms)/config/receiver_modem_setup.yaml">
+    <rosparam file="$(find rosacomms)/config/receiver_modem_setup.yaml"/>
 </launch>
