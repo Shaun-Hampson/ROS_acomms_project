@@ -10,3 +10,5 @@ Could see about using `TopicType, topic_str, _ = rostopic.get_topic_class('/some
 Acoustics driver needs to packet information being sent. Look up the packeting from the Hydromea. My driver might packet it anyway.
 
 Look again at ros_serial & ros_bridge
+
+socat -d -d pty,raw,echo=0 pty,raw,echo=0
