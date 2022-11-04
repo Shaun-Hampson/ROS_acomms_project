@@ -1,0 +1,2 @@
+msg len,,min len bz2,max len bz2,ave len bz2,min ratio bz2,max ratio bz2,ave ratio bz2,,min len zlib,max len zlib,ave len zlib,min ratio zlib,max ratio zlib,ave ratio zlib,,min len lzma,max len lzma,ave len lzma,min ratio lzma,max ratio lzma,ave ratio lzma
+394,,267,267,267.0,1.4756554307116105,1.4756554307116105,1.4756554307116103,,243,243,243.0,1.6213991769547325,1.6213991769547325,1.6213991769547325,,248,248,248.0,1.5887096774193548,1.5887096774193548,1.5887096774193545
