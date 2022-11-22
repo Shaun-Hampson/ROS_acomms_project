@@ -43,7 +43,8 @@ class receiver:
                     #print(a)
                 print(a)
                 for b in a:
-                    filled_msg += (b[7:-3])
+                    filled_msg += (b[7:-2])
+                filled_msg = filled_msg[0:(len(filled_msg)-1)]
                 print(filled_msg)
                 pub.publish(filled_msg)
                 #msg = ser.readline()
