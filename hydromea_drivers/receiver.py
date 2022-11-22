@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
-from turtle import backward
-import serial, rospy, sys, os, bz2
+import serial, rospy, sys, bz2
 from std_msgs.msg import String
 
 class receiver:

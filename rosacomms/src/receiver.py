@@ -39,7 +39,8 @@ class reciever:
         
         msg = message_converter.convert_dictionary_to_ros_message(data_type, msg)
         publisher = rp.Publisher(topic, roslib.message.get_message_class(data_type), queue_size = 1, latch=TRUE)
-        print(msg+"\n")
+        print(msg)
+        print('\n')
         publisher.publish(msg)
         
 if __name__ == "__main__":

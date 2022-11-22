@@ -12,3 +12,5 @@ Acoustics driver needs to packet information being sent. Look up the packeting f
 Look again at ros_serial & ros_bridge
 
 socat -d -d pty,raw,echo=0 pty,raw,echo=0
+
+discuss try/catch in decompressing incoming msgs
