@@ -9,13 +9,14 @@ class receiver:
         
         ser = serial.Serial('/dev/ttyUSB1', 9600, 8, serial.PARITY_NONE, serial.STOPBITS_ONE, 0.1)
         
-        print('Port'.ljust(25) + 'Baudrate'.ljust(25) + 'decoding'.ljust(25) + 'Voltage'.ljust(25))
+        print('Port'.ljust(25) + 'Baudrate'.ljust(25) + 'ID'.ljust(25) + 'Voltage'.ljust(25))
         cmd_string = '$?'
         cmd_bytes = cmd_string.encode('utf-8')
         ser.write(cmd_bytes)
         starting_msg = ser.readline()
+        address = starting_msg[2:5]
         voltage = float(starting_msg[6:11])*0.0002288818359375
-        print(str(ser.name).ljust(25) + str(ser.baudrate).ljust(25) + sys.getdefaultencoding().ljust(25) + str(voltage).ljust(25))
+        print(str(ser.name).ljust(25) + str(ser.baudrate).ljust(25) + str(address).ljust(25) + str(voltage).ljust(25))
         
         pub = rospy.Publisher('/rosacomms/nanomodem/in', String, queue_size=10)
         
@@ -40,13 +41,19 @@ class receiver:
                         #print(filled_msg)
                         if msg[-3] == '#':
                             stop = True
-                    #print(a)
                 print(a)
                 for b in a:
                     filled_msg += (b[7:-2])
                 filled_msg = filled_msg[0:(len(filled_msg)-1)]
                 print(filled_msg)
-                pub.publish(filled_msg)
+                try:
+                    decomped_msg = zlib.decompress(filled_msg)
+                    print(decomped_msg)
+                except:
+                    print('error')
+                    decomped_msg = ''
+                pub.publish(decomped_msg)
+                print('\n')
                 #msg = ser.readline()
                 #print('Here' + msg)
                 #if msg[-1] == '\n':

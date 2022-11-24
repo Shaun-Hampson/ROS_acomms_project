@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from encodings import utf_8
-import serial, rospy, zlib, time
+import serial, rospy, zlib, time, math
 from std_msgs.msg import String
 
 class sender:
@@ -16,7 +16,7 @@ class sender:
         voltage = float(msg[6:11])*0.0002288818359375
         
         print('Port'.ljust(25) + 'Baudrate'.ljust(25) + 'ID'.ljust(25) + 'Voltage'.ljust(25))
-        print(str(self.ser.name).ljust(25) + str(self.ser.baudrate).ljust(25) + node_ID.ljust(25) + str(voltage).ljust(25))
+        print(str(self.ser.name).ljust(25) + str(self.ser.baudrate).ljust(25) + node_ID.ljust(25) + str(voltage).ljust(25) + '\n')
         
         rospy.init_node('Nanomodem_sender')
         rospy.Subscriber('/rosacomms/nanomodem/out', String, self.sender_callback)
@@ -26,31 +26,31 @@ class sender:
         msg = string.data
         compressed_msg = zlib.compress(msg)
         ratio = float(len(msg))/float(len(compressed_msg))
-        if ratio > 10:
+        if ratio > 1:
             self.write_msg(compressed_msg)
-            #print(1)
+            print('Compressing msg\n')
         else:
             self.write_msg(msg)
-            #print(2)
+            print('Msg does not need compressed\n')
         #print(self.ser.readline())       
         #print('%s\n\t' %string.data)
         
     def write_msg(self, msg):
-        print('here')
+        #print('here')
         msg += '#'
-        print(len(msg))
+        print('No. of parts to send: ' + str(int(math.ceil(len(msg)/float(64)))))
         run_once_more = False
         while len(msg) > 64 or run_once_more == True:
             time.sleep(3)
             msg_prt = msg[0:64]
             cmd_string = '$B' + '{:02d}'.format(len(msg_prt)) + msg_prt
-            cmd_bytes = cmd_string.encode('utf-8')
-            print(cmd_bytes)
-            if self.ser.write(cmd_bytes) != len(cmd_bytes):
+            #cmd_bytes = cmd_string.encode('utf-8')
+            #print(cmd_bytes)
+            if self.ser.write(cmd_string) != len(cmd_string):
                 print('Error')
             size = (len(msg)-64)
             msg = msg[-size:]
-            print(len(msg))
+            #print(len(msg))
             if len(msg) > 0 and size > 0:
                 run_once_more = True
             else:

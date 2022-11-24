@@ -21,7 +21,7 @@ class reciever:
         
     def extract(self, unparsed_msg):
         print("received message")
-        print(unparsed_msg.data)
+        #print(unparsed_msg.data)
         #print(type(unparsed_msg.data))
         try:
             parsed_msg = json.loads(unparsed_msg.data)
@@ -30,7 +30,7 @@ class reciever:
             msg = parsed_msg['msg']
             data_type = parsed_msg['type']
             print(topic)
-            print(msg)
+            #print(msg)
             print(data_type)
         except:
             raise ReceiverException("failed to load JSON message")
