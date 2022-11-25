@@ -51,7 +51,7 @@ class receiver:
                     print(decomped_msg)
                 except:
                     print('error')
-                    decomped_msg = ''
+                    decomped_msg = filled_msg
                 pub.publish(decomped_msg)
                 print('\n')
                 #msg = ser.readline()
