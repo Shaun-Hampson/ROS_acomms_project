@@ -27,11 +27,11 @@ class sender:
         compressed_msg = zlib.compress(msg)
         ratio = float(len(msg))/float(len(compressed_msg))
         if ratio > 1:
+            print('Compressing msg')
             self.write_msg(compressed_msg)
-            print('Compressing msg\n')
         else:
+            print('Msg does not need compressed')
             self.write_msg(msg)
-            print('Msg does not need compressed\n')
         #print(self.ser.readline())       
         #print('%s\n\t' %string.data)
         
@@ -55,6 +55,7 @@ class sender:
                 run_once_more = True
             else:
                 run_once_more = False
+        print('Finished sending\n')
         
 if __name__ == '__main__':
     while not rospy.is_shutdown():

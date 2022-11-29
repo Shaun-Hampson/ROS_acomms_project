@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import serial, rospy, sys, zlib
+import serial, rospy, zlib
 from std_msgs.msg import String
 
 class receiver:
@@ -28,7 +28,8 @@ class receiver:
                 a = []
                 while stop == False:
                     msg = ser.readline()
-                    if msg[-2:] ==  '\r\n':
+                    if msg != '':
+                        print(msg)
                         a.append(msg)
                     #print(a[i])
                     #print('while')
@@ -43,15 +44,21 @@ class receiver:
                             stop = True
                 print(a)
                 for b in a:
-                    filled_msg += (b[7:-2])
+                    if b[0:2] == '#B' and b[-2:] == '\r\n':
+                        filled_msg = filled_msg +b[7:-2]
+                    elif b[0:2] == '#B':
+                        filled_msg = filled_msg + b[7:]
+                    elif b[-2:] == '\r\n':
+                        filled_msg = filled_msg + b[0:-2]
+                    else:
+                        filled_msg = filled_msg + b
                 filled_msg = filled_msg[0:(len(filled_msg)-1)]
                 print(filled_msg)
-                try:
-                    decomped_msg = zlib.decompress(filled_msg)
-                    print(decomped_msg)
-                except:
-                    print('error')
-                    decomped_msg = filled_msg
+                #try:
+                decomped_msg = zlib.decompress(filled_msg)
+                print(decomped_msg)
+                #except:
+                #    decomped_msg = filled_msg
                 pub.publish(decomped_msg)
                 print('\n')
                 #msg = ser.readline()
