@@ -1,6 +1,10 @@
 # ROS_acomms_project
 A ROS package for handling wireless communication of ROS topic publish commands via arbitrary communication mediums.
 
+ROSAcomms provides a commandline tool that takes a topic name and type and a message and parses it to a standard form suitable for wireless transmission. As ROSAcomms is intended to be for sending messages between two unconnected ROS systems, another parser is provided for the receiving ROS system to tur the standard form message back into a form used by ROS. For sending and receiving the standard form message, modem driver programmes are required.
+
+![](/assets/Systemdiagram.drawio.png?raw=true "System Diagram")
+
 
 ## Direction for use
 ### Required Packages
