@@ -11,18 +11,18 @@ ROSAcomms provides a commandline tool that takes a topic name and type and a mes
 Please ensure you have the [***rospy_message_converter***](https://github.com/uos/rospy_message_converter)
 
 ### Usage
-The correct drivers need to be running before a message can be sent. Two drivers are already provided:\\
-Hydromea LUMA 250LP -> optical communication\\
-Nanomodem v3 -> acoustic communication\\
+The correct drivers need to be running before a message can be sent. Two drivers are already provided:\
+Hydromea LUMA 250LP -> optical communication\
+Nanomodem v3 -> acoustic communication\
 These drivers may be used for other modems of the same communication medium, however if custom drivers are needed please see the __Adding Custom Drivers__ section for how to do this.
 
-The receiver parser uses a default modem provided to its launch file via the config file. When changing the modem being used the modem in the config file needs to be set to the correct one. The receiver parser can be launched using:\\
+The receiver parser uses a default modem provided to its launch file via the config file. When changing the modem being used the modem in the config file needs to be set to the correct one. The receiver parser can be launched using:\
 `$ roslaunch rosacomms receiver.launch`
 
-Once the drivers and the receiver parser are running, messages can be sent between the two ROS systems. Using the commandline tool the system can be provided with the information for the desired topic to be published to and the rosmessage containing the required data.\\
-To publish using the default modem:\\
-`$ rosacomms pub topic\_name topic\_type message`\\
-To publish using a non-default modem use the device (-d) option:\\
+Once the drivers and the receiver parser are running, messages can be sent between the two ROS systems. Using the commandline tool the system can be provided with the information for the desired topic to be published to and the rosmessage containing the required data.\
+To publish using the default modem:\
+`$ rosacomms pub topic\_name topic\_type message`\
+To publish using a non-default modem use the device (-d) option:\
 `$ rosacomms pub topic\_name topic\_type message -d modem\_name`
 
 ### Adding Custom Drivers
@@ -34,6 +34,6 @@ ROSAcomms is intended to be open-source. Please use as required. Feedback and qu
 
 
 ## Development Notes
-`message_class = roslib.message.get_message_class(message_type)`\\
-`TopicType, topic_str, _ = rostopic.get_topic_class('/some/topic')`\\
+`message_class = roslib.message.get_message_class(message_type)`\
+`TopicType, topic_str, _ = rostopic.get_topic_class('/some/topic')`\
 socat -d -d pty,raw,echo=0 pty,raw,echo=0
