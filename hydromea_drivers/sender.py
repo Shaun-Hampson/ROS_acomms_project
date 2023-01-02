@@ -7,7 +7,7 @@ class sender:
     def __init__(self):
         self.ser = serial.Serial(
             #port='/dev/ttyUSB1',\
-            port='/dev/pts/3',\
+            port='/dev/pts/6',\
             baudrate=115200,\
             parity=serial.PARITY_NONE,\
             stopbits=serial.STOPBITS_ONE,\
@@ -30,15 +30,15 @@ class sender:
         msg = string.data
         msg += '\n'
         msg = msg.encode('ascii')
-        compressed_msg = bz2.compress(msg)
-        self.ser.write(compressed_msg)
+        #compressed_msg = bz2.compress(msg)
+        self.ser.write(msg)
         print(len(msg))
-        print(len(compressed_msg))
-        print(float(len(msg))/float(len(compressed_msg)))
+        #print(len(compressed_msg))
+        #print(float(len(msg))/float(len(compressed_msg)))
         
         #p = bz2.decompress(compressed_msg)
         #print(p)
-        print('Publishing: ' +string.data+ ' as ' +compressed_msg)
+        print('Publishing: ' +string.data)#+ ' as ' +msg)
         #print('Published: '+ self.ser.readline())
         
 if __name__ == '__main__':

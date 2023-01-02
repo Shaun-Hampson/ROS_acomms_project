@@ -9,7 +9,7 @@ class receiver:
         
         ser = serial.Serial(
             #port='/dev/ttyUSB0',\
-            port='/dev/pts/2',\
+            port='/dev/pts/7',\
             baudrate=115200,\
             parity=serial.PARITY_NONE,\
             stopbits=serial.STOPBITS_ONE,\
@@ -28,9 +28,9 @@ class receiver:
         
         while not rospy.is_shutdown():
             if ser.in_waiting > 0:
-                compressed_msg = ser.readline()
-                print(compressed_msg)
-                msg = decompressor.decompress(compressed_msg)
+                msg = ser.readline()
+                #print(compressed_msg)
+                #msg = decompressor.decompress(compressed_msg)
                 #msg = msg.decode(encoding = 'ascii', errors = 'strict')
                 #time.sleep(0.5)
                 if msg != '':

@@ -1,9 +1,13 @@
 # ROS_acomms_project
-A repo to store a ROS workspace handling the conversion of messages into a form tranmittable via acoustic waves for the communication of data to a submersable robot
+A ROS package for handling wireless communication of ROS topic publish commands via arbitrary communication mediums.
+
 
 ## Direction for use
-### Required
+### Required Packages
 Please ensure you have the [***rospy_message_converter***](https://github.com/uos/rospy_message_converter)
+
+### Usage
+
 
 
 ## Notes

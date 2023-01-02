@@ -54,12 +54,12 @@ class receiver:
                         filled_msg = filled_msg + b
                 filled_msg = filled_msg[0:(len(filled_msg)-1)]
                 print(filled_msg)
-                #try:
-                decomped_msg = zlib.decompress(filled_msg)
-                print(decomped_msg)
-                #except:
-                #    decomped_msg = filled_msg
-                pub.publish(decomped_msg)
+                try:
+                    msg_to_pub = zlib.decompress(filled_msg)
+                    print(msg_to_pub)
+                except:
+                    msg_to_pub = filled_msg
+                pub.publish(msg_to_pub)
                 print('\n')
                 #msg = ser.readline()
                 #print('Here' + msg)
