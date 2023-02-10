@@ -8,7 +8,7 @@ ROSAcomms provides a commandline tool that takes a topic name and type and a mes
 
 ## Direction for use
 ### Required Packages
-Please ensure you have the [***rospy_message_converter***](https://github.com/uos/rospy_message_converter)
+Please ensure you have the [***rospy_message_converter***](https://github.com/uos/rospy_message_converter) installed.
 
 ### Usage
 The correct drivers need to be running before a message can be sent. Two drivers are already provided:\
@@ -34,6 +34,16 @@ ROSAcomms is intended to be open-source. Please use as required. Feedback and qu
 
 
 ## Development Notes
+### code notes
 `message_class = roslib.message.get_message_class(message_type)`\
 `TopicType, topic_str, _ = rostopic.get_topic_class('/some/topic')`\
 socat -d -d pty,raw,echo=0 pty,raw,echo=0
+
+### Areas for work
+#### Light tasks
+1. Launching of modem drivers is a hassle, system needs laucnh the desired modem driver upon launch.
+2. Commenting of code should be given as future edits may require the need to re-understand the code.
+
+#### Heavy tasks
+1. Acoustic modem drivers needs the catch for messages being send to be updated. Look at using two bytes in each message for representing the number of message parts and the number for each part received.
+2. Add in ROS serivce calling into the project.

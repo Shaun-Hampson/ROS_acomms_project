@@ -1,5 +1,6 @@
 from optparse import OptionParser
 from socket import socket
+
 from std_msgs.msg import String
 from rospy_message_converter import message_converter
 import rosgraph, rospy, roslib, sys, yaml, json, genpy
@@ -20,6 +21,13 @@ def _check_master():
             rosgraph.Master('/rosacomms').getPid()
         except socket.error:
             raise ROSAcommsIOException('Unable to communicate with master')
+        
+def _startup(rosacomms_out):
+    rospy.init_node('rosacomms', anonymous=True,  disable_rosout=True, disable_rostime=True)
+    pub = rospy.Publisher(rosacomms_out, String, queue_size=10)
+    rate = rospy.Rate(0.5)
+    rate.sleep()
+    return pub
 
 
 def _full_usage():
@@ -45,12 +53,13 @@ def rosacomms_pub(arg):
         rosacomms_out = '/rosacomms/evologics/out'
     elif options.device == 'nanomodem':
         rosacomms_out = '/rosacomms/nanomodem/out'
-    if len(arg) == 0:
+    if len(args) == 0:
         parser.error('specify topic name')
-    if len(arg) == 1:
+    if len(args) == 1:
         parser.error('specify topic type')
     topic_name, topic_type = args[0], args[1]
     
+    #TODO: what is the next 6 lines doing for the programme?
     try:
         pub_args = []
         for arg in args[2:]:
@@ -60,10 +69,8 @@ def rosacomms_pub(arg):
     
     _check_master()
     
-    rospy.init_node('rosacomms', anonymous=True,  disable_rosout=True, disable_rostime=True)
-    pub = rospy.Publisher(rosacomms_out, String, queue_size=10)
-    rate = rospy.Rate(0.5)
-    rate.sleep()
+    pub = _startup(rosacomms_out)
+    
     msg_class = roslib.message.get_message_class(topic_type)
     #print('topic name: ' + topic_name + '\n')
     #print('topic type: ' + topic_type + '\n')
@@ -90,7 +97,46 @@ def _publish(pub, topic_name, msg_class, pub_args):
     print(c.data)
     
     pub.publish(c)
+    
+    
+def rosacomms_srv(arg):
+    args = arg[2:]
+    
+    parser = OptionParser(usage="usage: %prog srv /topic service_args [args...]", prog=NAME)
+    parser.add_option("-d", "--device", help='switches modem from hydromea to chosen device', default='hydromea')
+    
+    (options, args) = parser.parse_args(args)
+    
+    with open('/home/shaun_hampson/acomms_ws/src/ROS_acomms_project/rosacomms/config/modem_setup.yaml', 'r') as file:
+        file = yaml.safe_load(file)
 
+    for i in file:
+        if options.device == i:
+            rosacomms_out = 'rosacomms_srv/'+ i +'/out'
+            break
+    if len(args) == 0:
+        print('Specify service name')
+    service = args[0]
+    service_args = args[1:]
+        
+    _check_master()
+    
+    pub = _startup(rosacomms_out)
+    
+    _srv_publish(pub, service, service_args)
+    
+    
+def _srv_publish(pub, service, service_args):
+    parsed_srv_call = {
+        "srv": service,
+        "args": service_args
+    }
+    
+    c = String()
+    c.data = json.dumps(parsed_srv_call)
+    
+    pub.publish(c)
+        
 
 def _fill_message(msg, pub_args):
     try:
@@ -125,6 +171,8 @@ def main(args = None):
         command = args[1]
         if command == 'pub':
             rosacomms_pub(args)
+        if command == 'srv':
+            rosacomms_srv(args)
         else:
             _full_usage()
     except ROSAcommsException as e:
