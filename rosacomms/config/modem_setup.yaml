@@ -1,0 +1,5 @@
+modem_type = """
+              - 'hydromea'
+              - 'nanomodem'
+              - 'evologics'
+"""
